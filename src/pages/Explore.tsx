@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useDebounce } from '../hooks/useDebounce';
 
 // 1. Define the TypeScript structure for a Beverage object from the API
 interface Beverage {
@@ -15,6 +16,7 @@ export const Explore = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   // 3. Create a reusable function to fetch data from the API
   const fetchBeverages = async (query: string) => {
@@ -39,14 +41,14 @@ export const Explore = () => {
 
   // 4. Trigger initial fetch when the page loads for the first time
   useEffect(() => {
-    fetchBeverages('');
-  }, []);
+    fetchBeverages(debouncedSearchTerm);
+  }, [debouncedSearchTerm]);
 
   // 5. Handle Form Submission for search
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    fetchBeverages(searchTerm);
-  };
+  // const handleSearchSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   fetchBeverages(searchTerm);
+  // };
 
   return (
     <div className="min-h-screen bg-slate-50 p-6">
@@ -59,21 +61,15 @@ export const Explore = () => {
           </div>
 
           {/* Search Form */}
-          <form onSubmit={handleSearchSubmit} className="flex gap-2">
+          <div className="flex gap-2">
             <input
               type="text"
-              placeholder="Search for a drink (e.g., Margarita)..."
+              placeholder="Type to search beverages..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800 w-64 md:w-80"
             />
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition"
-            >
-              Search
-            </button>
-          </form>
+          </div>
         </div>
 
         {/* Status Indicators */}
