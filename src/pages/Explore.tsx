@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDebounce } from '../hooks/useDebounce';
+import { BeverageSkeleton } from '../components/BeverageSkeleton';
 
 // 1. Define the TypeScript structure for a Beverage object from the API
 interface Beverage {
@@ -73,10 +74,21 @@ export const Explore = () => {
         </div>
 
         {/* Status Indicators */}
-        {loading && <p className="text-center text-gray-600 text-lg">Loading tasty drinks...</p>}
+        {/* {loading && <p className="text-center text-gray-600 text-lg">Loading tasty drinks...</p>} */}
+        {/* an array of skeletons matching the grid layout */}
+        {loading && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {/* Create an arbitrary array of 8 elements to fill out a clean grid mockup */}
+            {Array.from({ length: 8 }).map((_, index) => (
+              <BeverageSkeleton key={index} />
+            ))}
+          </div>
+        )}
+
         {error && <p className="text-center text-red-500 font-medium">{error}</p>}
 
         {/* Results Grid */}
+        {/* Ensure the real data grid only renders when NOT loading and NO errors exist */}
         {!loading && !error && (
           beverages.length === 0 ? (
             <p className="text-center text-gray-500 text-lg mt-12">No beverages found. Try a different search!</p>
