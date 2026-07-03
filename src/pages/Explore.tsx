@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDebounce } from '../hooks/useDebounce';
 import { BeverageSkeleton } from '../components/BeverageSkeleton';
+import { useFavorites } from '../context/FavoritesContext';
 
 // 1. Define the TypeScript structure for a Beverage object from the API
 interface Beverage {
@@ -18,6 +19,7 @@ export const Explore = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  const { addFavorite, removeFavorite, isFavorite } = useFavorites();
 
   // 3. Create a reusable function to fetch data from the API
   const fetchBeverages = async (query: string) => {
@@ -113,6 +115,30 @@ export const Explore = () => {
                         {drink.strDrink}
                       </h2>
                     </div>
+
+                    {/* Heart Toggle Button */}
+                    <button
+                      onClick={() => {
+                        if (isFavorite(drink.idDrink)) {
+                          removeFavorite(drink.idDrink);
+                        } else {
+                          addFavorite({
+                            idDrink: drink.idDrink,
+                            strDrink: drink.idDrink, // or drink.strDrink
+                            strDrinkThumb: drink.strDrinkThumb,
+                            strCategory: drink.strCategory,
+                          });
+                        }
+                      }}
+                      className={`mb-2 w-full text-center py-2 rounded-lg font-medium text-sm transition border ${
+                        isFavorite(drink.idDrink)
+                          ? 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100'
+                          : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                      }`}
+                    >
+                      {isFavorite(drink.idDrink) ? '❤️ Favorited' : '🤍 Add to Favorites'}
+                    </button>
+
                     {/* Link to Dynamic Route */}
                     <Link 
                       to={`/beverage/${drink.idDrink}`}
