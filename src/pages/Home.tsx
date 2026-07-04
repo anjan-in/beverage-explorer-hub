@@ -37,7 +37,7 @@ export const Home = () => {
   const recentFavorites = favorites.slice(0, 4);
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-12">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-gray-900 dark:text-slate-100 transition-colors duration-300 pb-12">
       {/* 1. Hero Showcase Banner */}
       <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white py-16 px-6 shadow-md">
         <div className="max-w-6xl mx-auto flex flex-col items-center text-center">
@@ -71,7 +71,7 @@ export const Home = () => {
         {/* 2. Dynamic Shelf Section (Driven by Context state) */}
         <div>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+            <h2 className="text-xl font-bold text-gray-800 dark:text-slate-300 flex items-center gap-2">
               <span>🌟</span> Your Quick Shelf
             </h2>
             {favorites.length > 4 && (
@@ -82,11 +82,11 @@ export const Home = () => {
           </div>
 
           {favorites.length === 0 ? (
-            <div className="bg-white border border-dashed border-gray-300 rounded-xl p-8 text-center text-sm text-gray-500 shadow-sm">
+            <div className="bg-white border border-dashed border-gray-300 rounded-xl p-8 text-center text-sm text-gray-500 shadow-sm transition-colors duration-300 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400">
               No items pinned yet. Go to the Explorer page and tap the heart icon to watch them load here in real time.
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 transition-colors duration-300 dark:bg-slate-950">
               {recentFavorites.map((drink) => (
                 <Link
                   key={drink.idDrink}
@@ -100,11 +100,11 @@ export const Home = () => {
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                     />
                   </div>
-                  <div className="p-3 flex-grow flex flex-col justify-between">
+                  <div className="p-3 flex-grow flex flex-col justify-between transition-colors duration-300 dark:bg-slate-900 dark:border-slate-800">
                     <span className="text-[10px] font-bold text-blue-600 uppercase tracking-wide">
                       {drink.strCategory}
                     </span>
-                    <h3 className="text-sm font-bold text-gray-800 truncate mt-0.5">
+                    <h3 className="text-sm font-bold text-gray-800 dark:text-slate-300  truncate mt-0.5">
                       {drink.strDrink}
                     </h3>
                   </div>
@@ -116,7 +116,7 @@ export const Home = () => {
 
         {/* 3. Spotlight Curated Section (Driven by API loading) */}
         <div>
-          <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+          <h2 className="text-xl font-bold text-gray-800 dark:text-slate-300 mb-6 flex items-center gap-2">
             <span>🔥</span> Featured Classics
           </h2>
           
@@ -131,7 +131,7 @@ export const Home = () => {
               {spotlightDrinks.map((drink) => (
                 <div
                   key={drink.idDrink}
-                  className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm flex items-center p-4 gap-4 hover:shadow-md transition"
+                  className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex gap-4 p-4 items-center group"
                 >
                   <img
                     src={drink.strDrinkThumb}
@@ -142,12 +142,12 @@ export const Home = () => {
                     <span className="text-[10px] font-semibold text-indigo-600 uppercase tracking-wider block">
                       {drink.strCategory}
                     </span>
-                    <h3 className="text-base font-bold text-gray-800 truncate mb-2">
+                    <h3 className="text-base font-bold text-gray-800 dark:text-slate-300 truncate mb-2">
                       {drink.strDrink}
                     </h3>
                     <Link
                       to={`/beverage/${drink.idDrink}`}
-                      className="text-xs font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md transition inline-block"
+                      className="text-xs font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md transition inline-block dark:bg-slate-800 dark:text-slate-300 dark:hover:text-slate-200"
                     >
                       View Recipe
                     </Link>

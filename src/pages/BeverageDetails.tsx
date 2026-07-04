@@ -62,13 +62,13 @@ export const BeverageDetails = () => {
   if (!drink) return null;
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
-      <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden mt-6">
-        <div className="p-4 bg-slate-100 border-b border-gray-200">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-gray-900 dark:text-slate-100 p-6 md:p-10 transition-colors duration-300">
+      <div className="max-w-4xl mx-auto bg-white border border-gray-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden mt-6">
+        <div className="p-4 bg-slate-100 border-b border-gray-200 dark:bg-slate-800 dark:border-slate-800">
           <Link to="/explore" className="text-blue-600 hover:underline text-sm">← Back to Explore</Link>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 transition-colors duration-300 bg-white dark:bg-slate-900">
           {/* Image Column */}
           <div>
             <img 
@@ -82,14 +82,14 @@ export const BeverageDetails = () => {
           <div className="flex flex-col justify-between">
             <div>
               <div className="flex gap-2 mb-2">
-                <span className="px-2 py-1 bg-blue-50 text-blue-600 text-xs font-semibold rounded uppercase">
+                <span className="px-2 py-1 bg-blue-50 text-blue-600 text-xs font-semibold rounded uppercase dark:bg-slate-800 dark:text-slate-300">
                   {drink.strCategory}
                 </span>
-                <span className="px-2 py-1 bg-emerald-50 text-emerald-600 text-xs font-semibold rounded uppercase">
+                <span className="px-2 py-1 bg-emerald-50 text-emerald-600 text-xs font-semibold rounded uppercase dark:bg-slate-800 dark:text-slate-300">
                   {drink.strAlcoholic}
                 </span>
               </div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">{drink.strDrink}</h1>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-300 mb-4">{drink.strDrink}</h1>
               
               <div className="mb-6">
                 <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Served In</h3>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useDebounce } from '../hooks/useDebounce';
 import { BeverageSkeleton } from '../components/BeverageSkeleton';
 import { useFavorites } from '../context/FavoritesContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // 1. Define the TypeScript structure for a Beverage object from the API
 interface Beverage {
@@ -10,6 +11,7 @@ interface Beverage {
   strDrink: string;
   strDrinkThumb: string;
   strCategory: string;
+  strAlcoholic: string;
 }
 
 export const Explore = () => {
@@ -54,23 +56,23 @@ export const Explore = () => {
   // };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-gray-900 dark:text-slate-100 p-6 md:p-10 transition-colors duration-300">
       <div className="max-w-6xl mx-auto">
         {/* Header Elements */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div>
             <Link to="/" className="text-sm text-blue-600 hover:underline">← Back Home</Link>
-            <h1 className="text-3xl font-bold text-gray-800 mt-1">Explore Beverages</h1>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-slate-300 mt-1">Explore Beverages</h1>
           </div>
 
           {/* Search Form */}
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <input
               type="text"
               placeholder="Type to search beverages..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800 w-64 md:w-80"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800 w-64 md:w-80 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-300"
             />
           </div>
         </div>
@@ -96,59 +98,70 @@ export const Explore = () => {
             <p className="text-center text-gray-500 text-lg mt-12">No beverages found. Try a different search!</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {beverages.map((drink) => (
-                <div 
-                  key={drink.idDrink} 
-                  className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col"
-                >
-                  <img 
-                    src={drink.strDrinkThumb} 
-                    alt={drink.strDrink} 
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-4 flex-grow flex flex-col justify-between">
-                    <div>
-                      <span className="text-xs font-semibold uppercase tracking-wide text-blue-600">
-                        {drink.strCategory || 'Beverage'}
-                      </span>
-                      <h2 className="text-lg font-bold text-gray-800 mt-1 mb-4 line-clamp-1">
-                        {drink.strDrink}
-                      </h2>
+              <AnimatePresence mode="popLayout">
+                {beverages.map((drink) => (
+                  <motion.div
+                    key={drink.idDrink}
+                    layout
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    /* Framer Motion hover  */
+                    whileHover={{ 
+                      y: -8, 
+                      scale: 1.01,
+                      boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" 
+                    }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl overflow-hidden flex flex-col group transition-colors duration-300 my-2"
+                  >
+                    <img src={drink.strDrinkThumb} alt={drink.strDrink} className="w-full h-48 object-cover" />
+                    <div className="p-4 flex-grow flex flex-col justify-between">
+                      <div>
+                        <span className="text-xs font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400">
+                          {drink.strCategory || 'Beverage'}
+                        </span>
+                        <h2 className="text-lg font-bold text-gray-800 dark:text-slate-200 mt-1 mb-4 truncate">
+                          {drink.strDrink}
+                        </h2>
+                      </div>
+
+                      {/* Upgraded Heart Pulse Spring Button */}
+                      <motion.button
+                        whileTap={{ scale: 0.92 }}
+                        whileHover={{ scale: 1.02 }}
+                        onClick={() => {
+                          if (isFavorite(drink.idDrink)) {
+                            removeFavorite(drink.idDrink);
+                          } else {
+                            addFavorite({
+                              idDrink: drink.idDrink,
+                              strDrink: drink.strDrink,
+                              strDrinkThumb: drink.strDrinkThumb,
+                              strCategory: drink.strCategory || 'Beverage',
+                              strAlcoholic: drink.strAlcoholic || 'Alcoholic', // Default fallback for safety loop map
+                            });
+                          }
+                        }}
+                        className={`mb-2 w-full text-center py-2 rounded-lg font-medium text-sm transition-colors duration-200 ${
+                          isFavorite(drink.idDrink)
+                            ? 'bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/50'
+                            : 'bg-slate-50 dark:bg-slate-800 text-gray-600 dark:text-slate-400 border border-gray-200 dark:border-slate-700'
+                        }`}
+                      >
+                        {isFavorite(drink.idDrink) ? '❤️ Favorited' : '🤍 Add to Favorites'}
+                      </motion.button>
+
+                      <Link
+                        to={`/beverage/${drink.idDrink}`}
+                        className="block w-full text-center py-2 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium rounded-lg transition text-sm"
+                      >
+                        View Details
+                      </Link>
                     </div>
-
-                    {/* Heart Toggle Button */}
-                    <button
-                      onClick={() => {
-                        if (isFavorite(drink.idDrink)) {
-                          removeFavorite(drink.idDrink);
-                        } else {
-                          addFavorite({
-                            idDrink: drink.idDrink,
-                            strDrink: drink.idDrink, // or drink.strDrink
-                            strDrinkThumb: drink.strDrinkThumb,
-                            strCategory: drink.strCategory,
-                          });
-                        }
-                      }}
-                      className={`mb-2 w-full text-center py-2 rounded-lg font-medium text-sm transition border ${
-                        isFavorite(drink.idDrink)
-                          ? 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100'
-                          : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
-                      }`}
-                    >
-                      {isFavorite(drink.idDrink) ? '❤️ Favorited' : '🤍 Add to Favorites'}
-                    </button>
-
-                    {/* Link to Dynamic Route */}
-                    <Link 
-                      to={`/beverage/${drink.idDrink}`}
-                      className="block w-full text-center py-2 bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-600 font-medium rounded-lg transition text-sm"
-                    >
-                      View Details
-                    </Link>
-                  </div>
-                </div>
-              ))}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
           )
         )}

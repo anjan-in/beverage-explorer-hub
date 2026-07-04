@@ -2,11 +2,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Define the slim data structure we need to display a favorited card
-interface FavoriteDrink {
+export interface FavoriteDrink {
   idDrink: string;
   strDrink: string;
   strDrinkThumb: string;
   strCategory: string;
+  strAlcoholic: string;
 }
 
 interface FavoritesContextType {
