@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useFavorites } from '../context/FavoritesContext';
+import { Sparkles, Flame, ArrowRight } from 'lucide-react';
 
 interface SpotlightDrink {
   idDrink: string;
@@ -68,56 +69,10 @@ export const Home = () => {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 mt-12 space-y-12">
-        {/* 2. Dynamic Shelf Section (Driven by Context state) */}
+        {/* 2. Spotlight Curated Section (Driven by API loading) */}
         <div>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-800 dark:text-slate-300 flex items-center gap-2">
-              <span>🌟</span> Your Quick Shelf
-            </h2>
-            {favorites.length > 4 && (
-              <Link to="/favorites" className="text-xs font-semibold text-blue-600 hover:underline">
-                View All ({favorites.length}) →
-              </Link>
-            )}
-          </div>
-
-          {favorites.length === 0 ? (
-            <div className="bg-white border border-dashed border-gray-300 rounded-xl p-8 text-center text-sm text-gray-500 shadow-sm transition-colors duration-300 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400">
-              No items pinned yet. Go to the Explorer page and tap the heart icon to watch them load here in real time.
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 transition-colors duration-300 dark:bg-slate-950">
-              {recentFavorites.map((drink) => (
-                <Link
-                  key={drink.idDrink}
-                  to={`/beverage/${drink.idDrink}`}
-                  className="group bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col"
-                >
-                  <div className="relative overflow-hidden h-32">
-                    <img
-                      src={drink.strDrinkThumb}
-                      alt={drink.strDrink}
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                    />
-                  </div>
-                  <div className="p-3 flex-grow flex flex-col justify-between transition-colors duration-300 dark:bg-slate-900 dark:border-slate-800">
-                    <span className="text-[10px] font-bold text-blue-600 uppercase tracking-wide">
-                      {drink.strCategory}
-                    </span>
-                    <h3 className="text-sm font-bold text-gray-800 dark:text-slate-300  truncate mt-0.5">
-                      {drink.strDrink}
-                    </h3>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* 3. Spotlight Curated Section (Driven by API loading) */}
-        <div>
-          <h2 className="text-xl font-bold text-gray-800 dark:text-slate-300 mb-6 flex items-center gap-2">
-            <span>🔥</span> Featured Classics
+          <h2 className="text-xl font-bold text-gray-800 dark:text-slate-100 mb-6 flex items-center gap-2">
+            <Flame className="w-5 h-5 text-orange-500" /> Featured Classics
           </h2>
           
           {loading ? (
@@ -153,6 +108,52 @@ export const Home = () => {
                     </Link>
                   </div>
                 </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* 3. Dynamic Shelf Section (Driven by Context state) */}
+        <div>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-gray-800 dark:text-slate-100 flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-amber-500" /> Your Quick Shelf
+            </h2>
+            {favorites.length > 4 && (
+              <Link to="/favorites" className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
+                View All ({favorites.length}) <ArrowRight className="w-3 h-3" />
+              </Link>
+            )}
+          </div>
+
+          {favorites.length === 0 ? (
+            <div className="bg-white border border-dashed border-gray-300 rounded-xl p-8 text-center text-sm text-gray-500 shadow-sm transition-colors duration-300 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400">
+              No items pinned yet. Go to the Explorer page and tap the heart icon to watch them load here in real time.
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 transition-colors duration-300 dark:bg-slate-950">
+              {recentFavorites.map((drink) => (
+                <Link
+                  key={drink.idDrink}
+                  to={`/beverage/${drink.idDrink}`}
+                  className="group bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col"
+                >
+                  <div className="relative overflow-hidden h-32">
+                    <img
+                      src={drink.strDrinkThumb}
+                      alt={drink.strDrink}
+                      className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                    />
+                  </div>
+                  <div className="p-3 flex-grow flex flex-col justify-between transition-colors duration-300 dark:bg-slate-900 dark:border-slate-800">
+                    <span className="text-[10px] font-bold text-blue-600 uppercase tracking-wide">
+                      {drink.strCategory}
+                    </span>
+                    <h3 className="text-sm font-bold text-gray-800 dark:text-slate-300  truncate mt-0.5">
+                      {drink.strDrink}
+                    </h3>
+                  </div>
+                </Link>
               ))}
             </div>
           )}

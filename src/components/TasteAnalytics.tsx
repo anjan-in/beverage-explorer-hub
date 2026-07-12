@@ -1,4 +1,4 @@
-// src/components/TasteAnalytics.tsx
+import { BarChart3 } from 'lucide-react';
 import { useFavorites } from '../context/FavoritesContext';
 
 export const TasteAnalytics = () => {
@@ -30,10 +30,12 @@ export const TasteAnalytics = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 border-b border-gray-100 dark:border-slate-800 pb-4">
         <div>
           <h2 className="text-lg font-bold text-gray-800 dark:text-slate-100 flex items-center gap-2">
-            <span>📊</span> Cabinet Mixology Analytics
+            <BarChart3 className="w-5 h-5 text-blue-600 dark:text-blue-400" /> 
+            Cabinet Mixology Analytics
           </h2>
+          <p className="text-xs text-gray-400 mt-0.5">Real-time flavor profile metrics derived from your saved layout.</p>
         </div>
-        <div className="bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 px-3 py-1 rounded-full text-xs font-bold">
+        <div className="bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 px-3 py-1 rounded-full text-xs font-bold self-start sm:self-center">
           {totalCount} Total Items
         </div>
       </div>

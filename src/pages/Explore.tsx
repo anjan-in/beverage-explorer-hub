@@ -4,6 +4,7 @@ import { useDebounce } from '../hooks/useDebounce';
 import { BeverageSkeleton } from '../components/BeverageSkeleton';
 import { useFavorites } from '../context/FavoritesContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Heart } from 'lucide-react';
 
 // 1. Define the TypeScript structure for a Beverage object from the API
 interface Beverage {
@@ -128,7 +129,7 @@ export const Explore = () => {
 
                       {/* Upgraded Heart Pulse Spring Button */}
                       <motion.button
-                        whileTap={{ scale: 0.92 }}
+                        whileTap={{ scale: 0.95 }}
                         whileHover={{ scale: 1.02 }}
                         onClick={() => {
                           if (isFavorite(drink.idDrink)) {
@@ -139,17 +140,22 @@ export const Explore = () => {
                               strDrink: drink.strDrink,
                               strDrinkThumb: drink.strDrinkThumb,
                               strCategory: drink.strCategory || 'Beverage',
-                              strAlcoholic: drink.strAlcoholic || 'Alcoholic', // Default fallback for safety loop map
+                              strAlcoholic: drink.strAlcoholic || 'Alcoholic',
                             });
                           }
                         }}
-                        className={`mb-2 w-full text-center py-2 rounded-lg font-medium text-sm transition-colors duration-200 ${
+                        className={`mb-2 w-full flex items-center justify-center gap-2 py-2 rounded-lg font-medium text-sm transition-colors duration-200 border ${
                           isFavorite(drink.idDrink)
-                            ? 'bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/50'
-                            : 'bg-slate-50 dark:bg-slate-800 text-gray-600 dark:text-slate-400 border border-gray-200 dark:border-slate-700'
+                            ? 'bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 border-red-200 dark:border-red-900/40'
+                            : 'bg-slate-50 dark:bg-slate-800/60 text-gray-600 dark:text-slate-400 border-gray-200 dark:border-slate-700'
                         }`}
                       >
-                        {isFavorite(drink.idDrink) ? '❤️ Favorited' : '🤍 Add to Favorites'}
+                        <Heart 
+                          className={`w-4 h-4 transition-transform duration-200 ${
+                            isFavorite(drink.idDrink) ? 'fill-red-600 dark:fill-red-400 text-red-600 dark:text-red-400 scale-110' : 'text-gray-400 dark:text-slate-500'
+                          }`} 
+                        />
+                        <span>{isFavorite(drink.idDrink) ? 'Favorited' : 'Add to Favorites'}</span>
                       </motion.button>
 
                       <Link

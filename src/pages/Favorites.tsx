@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { useFavorites } from '../context/FavoritesContext';
 import { TasteAnalytics } from '../components/TasteAnalytics';
+import { GlassWater } from 'lucide-react';
 
 export const Favorites = () => {
   const { favorites, removeFavorite } = useFavorites();
@@ -13,10 +14,12 @@ export const Favorites = () => {
         <p className="text-sm text-gray-500 mb-8">Your curated collection of saved dynamic recipes.</p>
 
         {favorites.length === 0 ? (
-          <div className="bg-white border border-gray-200 rounded-2xl p-12 text-center max-w-md mx-auto shadow-sm mt-8 transition-colors duration-300 dark:bg-slate-900 dark:border-slate-800">
-            <span className="text-4xl">🍹</span>
-            <h2 className="text-xl font-bold text-gray-800 dark:text-slate-300 mt-4 mb-2">Your cabinet is empty</h2>
-            <p className="text-gray-500 text-sm mb-6">
+          <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-12 text-center max-w-md mx-auto shadow-sm mt-8">
+            <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+              <GlassWater className="w-6 h-6 text-gray-400 dark:text-slate-500" />
+            </div>
+            <h2 className="text-xl font-bold text-gray-800 dark:text-slate-200 mb-2">Your cabinet is empty</h2>
+            <p className="text-gray-500 dark:text-slate-400 text-sm mb-6">
               You haven't added any beverages to your collection yet. Start exploring to save your favorites!
             </p>
             <Link
