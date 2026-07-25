@@ -1,8 +1,9 @@
 
 import { Link } from 'react-router-dom';
 import { useFavorites } from '../context/FavoritesContext';
-import { TasteAnalytics } from '../components/TasteAnalytics';
+// import { TasteAnalytics } from '../components/TasteAnalytics';
 import { GlassWater } from 'lucide-react';
+import { InteractiveCharts } from '../components/InteractiveCharts';
 
 export const Favorites = () => {
   const { favorites, removeFavorite } = useFavorites();
@@ -32,7 +33,9 @@ export const Favorites = () => {
         ) : (
           <>
             {/* Dynamic Analytics Row Placement */}
-            <TasteAnalytics />
+            {/* <TasteAnalytics /> */}
+            {/* New Interactive Recharts Analytics Component */}
+            <InteractiveCharts />
             {/* favorites card mapping grid below... */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {favorites.map((drink) => (
