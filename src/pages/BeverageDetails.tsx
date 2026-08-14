@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SimilarBeverages } from '../components/SimilarBeverages';
 
 interface DetailedBeverage {
   idDrink: string;
@@ -305,6 +306,9 @@ export const BeverageDetails = () => {
 
           </div>
         </div>
+
+        {/* Dynamic Category Recommendations & Pairings */}
+        <SimilarBeverages currentDrinkId={drink.idDrink} category={drink.strCategory} />
       </div>
 
       {/* INTERACTIVE BAR ORDER CHECKOUT DRAWER */}
